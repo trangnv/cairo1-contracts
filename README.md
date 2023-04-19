@@ -1,5 +1,13 @@
-# Smart contracts with Cairo1
+# Collections of smart contracts written in Cairo1
 
-Collections of smart contracts written in Cairo1 The general workflow: Scarb for package management and compilation; starknet.py for declaration and deployment.
+## General workflow:
 
-- Hello Starknet
+- [Scarb](https://docs.swmansion.com/scarb/docs) for package management and compilation
+
+- [starknet.py](https://starknetpy.readthedocs.io/en/latest/guide/deploying_contracts.html#cairo1-contracts) for declaration and deployment.
+
+## Contracts
+
+- [Hello Starknet](src/hello_starknet.cairo)
+
+- [ERC20]

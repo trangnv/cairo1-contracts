@@ -56,17 +56,13 @@ async def declare_contract(compiled_contract, compiled_contract_casm):
     sierra_class_hash = resp.class_hash
     return sierra_class_hash
 
-
-async def deploy_contract(compiled_contract=0, compiled_contract_casm=0):
+async def deploy_contract(sierra_class_hash, raw_calldata, salt):
     # Use Universal Deployer Contract (UDC) to deploy the Cairo1 contract
     deployer = Deployer()
 
-    # sierra_class_hash = await declare_contract(compiled_contract, compiled_contract_casm)
-    sierra_class_hash = '0x3ae6bb224f12a8818c3ad59cc248968e8ee3a3081ff805610141695381a28f7' # use class_hash directly if contract is already declared
-
     # Create a ContractDeployment, optionally passing salt and raw_calldata
     contract_deployment = deployer.create_contract_deployment_raw(
-        class_hash=sierra_class_hash
+        class_hash=sierra_class_hash, raw_calldata=raw_calldata, salt=salt
     )
 
     # Using the call, create an Invoke transaction to the UDC
@@ -74,12 +70,24 @@ async def deploy_contract(compiled_contract=0, compiled_contract_casm=0):
         calls=contract_deployment.call, max_fee=MAX_FEE
     )
     resp = await account.client.send_transaction(deploy_invoke_transaction)
-    print(resp.transaction_hash)
+
+    print(f'Contract address: {hex(contract_deployment.address)} \ndeployed at transaction hash: {hex(resp.transaction_hash)}')
+
+def deploy_hello_starknet():
+    # compile
+    # compiled_contract, compiled_contract_casm = compile_contract('src/hello_starknet.cairo')
+    
+    # declare
+    # sierra_class_hash = asyncio.run(declare_contract(compiled_contract = compiled_contract, compiled_contract_casm=compiled_contract_casm))
+    sierra_class_hash = '0x3ae6bb224f12a8818c3ad59cc248968e8ee3a3081ff805610141695381a28f7' # use class_hash directly if contract is already declared
+
+    # deploy
+    asyncio.run(deploy_contract(sierra_class_hash, raw_calldata= None,salt= None))
+
 
 def main():
-    # compiled_contract, compiled_contract_casm = compile_contract('src/hello_starknet.cairo')
-    # asyncio.run(declare_contract(compiled_contract = compiled_contract, compiled_contract_casm=compiled_contract_casm))
-    asyncio.run(deploy_contract())
+    print("Deploying contracts...")
+    deploy_hello_starknet()
 
 if __name__ == "__main__":
     main()
