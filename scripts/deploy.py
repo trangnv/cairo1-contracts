@@ -75,7 +75,7 @@ async def deploy_contract(sierra_class_hash, raw_calldata, salt):
 
 def deploy_hello_starknet():
     # compile
-    # compiled_contract, compiled_contract_casm = compile_contract('src/hello_starknet.cairo')
+    compiled_contract, compiled_contract_casm = compile_contract('src/hello_starknet.cairo')
     
     # declare
     # sierra_class_hash = asyncio.run(declare_contract(compiled_contract = compiled_contract, compiled_contract_casm=compiled_contract_casm))
@@ -84,10 +84,22 @@ def deploy_hello_starknet():
     # deploy
     asyncio.run(deploy_contract(sierra_class_hash, raw_calldata= None,salt= None))
 
+def deploy_erc20():
+    # compile
+    compiled_contract, compiled_contract_casm = compile_contract('src/token/erc20.cairo')
+    
+    # declare
+    sierra_class_hash = asyncio.run(declare_contract(compiled_contract = compiled_contract, compiled_contract_casm=compiled_contract_casm))
+    print(sierra_class_hash)
+
+    # deploy
+    # asyncio.run(deploy_contract(sierra_class_hash, raw_calldata= None,salt= None))
+
 
 def main():
     print("Deploying contracts...")
-    deploy_hello_starknet()
+    # deploy_hello_starknet()
+    deploy_erc20()
 
 if __name__ == "__main__":
     main()
