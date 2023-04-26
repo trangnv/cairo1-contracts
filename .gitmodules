@@ -1,0 +1,4 @@
+[submodule "src/openzeppelin"]
+	path = src/openzeppelin
+	url = https://github.com/OpenZeppelin/cairo-contracts.git
+	branch = cairo-1
